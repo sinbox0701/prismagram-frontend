@@ -1,7 +1,7 @@
 //Client에 없는 state
 //This app has only local state => Authorization
 export const defaults = {
-    isLoggedIn: localStorage.getItem("token") !== null ? true: false
+    isLoggedIn: Boolean(localStorage.getItem("token")) || false
 };
 
 export const resolvers = {
