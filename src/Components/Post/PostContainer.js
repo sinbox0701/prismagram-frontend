@@ -4,6 +4,7 @@ import useInput from "../../Hooks/useInput"
 import PostPresenter from "./PostPresenter";
 import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQueries";
 import { useMutation } from "react-apollo-hooks";
+import { toast } from "react-toastify";
 
 const PostContainer = ({
     id,
@@ -26,6 +27,7 @@ const PostContainer = ({
     const [addCommentMutation] = useMutation(ADD_COMMENT,{
         variables:{postId:id, text:comment.value}
     });
+    const [selfComments, setSelfComments] = useState([]);
 
     const slide = () =>{
         const totalFiles = files.length;
@@ -35,7 +37,7 @@ const PostContainer = ({
             setTimeout(() => setCurrentItem(currentItem + 1),3000);
         }
 
-    };
+    };//file이 여러개일때 순서대로 계속 보여줌
     useEffect(()=>{
         slide();
     },[currentItem]);//currentItem이 변경 될때 마다 작동
@@ -49,7 +51,23 @@ const PostContainer = ({
           setIsLiked(true);
           setLikeCount(likeCountS + 1);
         }
-      };
+    };//like 동작 & Like Count 동작
+
+    const onKeyPress = async event => {
+        const { which } = event;
+        if (which === 13) {	      
+            event.preventDefault();	      
+            try {
+              const {
+                data: { addComment }
+              } = await addCommentMutation();
+              setSelfComments([...selfComments, addComment]);
+              comment.setValue("");
+            } catch {
+              toast.error("Cant send comment");
+            }
+        }
+    };//comment 작성 완료후 제출 방법
 
     return (
         <PostPresenter
@@ -66,6 +84,8 @@ const PostContainer = ({
             setLikeCount = {setLikeCount}
             currentItem={currentItem}
             toggleLike={toggleLike}
+            onKeyPress={onKeyPress}
+            selfComments={selfComments}
         />
     );
 };
