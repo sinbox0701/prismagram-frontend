@@ -1,5 +1,6 @@
 //style은 여기에 coding
 import React from "react";
+import {Helmet} from "react-helmet";
 import styled from "styled-components";
 import Button from "../../Components/Button";
 import Input from "../../Components/Input";
@@ -60,25 +61,40 @@ export default ({
     <Wrapper>
         <Form>
             {action === "logIn" && (
-            <form onSubmit={onSubmit}>
+            <>
+              <Helmet>
+                <title>Log In | Prismagram</title>
+              </Helmet>  
+              <form onSubmit={onSubmit}>
                 <Input placeholder={"Email"} {...email} type="email"/>
                 <Button text={"Log in"} />
-            </form>
+              </form>
+            </>
             )}
-            {action === "signUp" && (  
-            <form onSubmit={onSubmit}>
+            {action === "signUp" && (
+            <>
+              <Helmet>
+                <title>Sign Up | Prismagram</title>
+              </Helmet>    
+              <form onSubmit={onSubmit}>
                 <Input placeholder={"First name"} {...firstName}/>
                 <Input placeholder={"Last name"} {...lastName}/>
                 <Input placeholder={"Email"} {...email} type="email"/>
                 <Input placeholder={"Username"} {...username}/>
                 <Button text={"Sign up"} />
-            </form>
+              </form>
+            </>
             )}
             {action === "confirm" && (
-            <form onSubmit={onSubmit}>
+            <>
+              <Helmet>
+                <title>Log In | Prismagram</title>
+              </Helmet>  
+              <form onSubmit={onSubmit}>
                 <Input placeholder="Paste your secret" required {...secret} />
                 <Button text={"Confirm"} />
-            </form>
+              </form>
+            </>
             )}
         </Form>
         {action !== "confirm" && (
